@@ -8,5 +8,5 @@ from flask import jsonify
 
 @app_views.route("/status", strict_slashes=False)
 def status_code():
-    data = {"status": "ok"}
+    data = {"status": "OK"}
     return jsonify(data)
