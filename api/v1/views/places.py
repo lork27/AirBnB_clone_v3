@@ -56,7 +56,7 @@ def post_place(id):
 
         if "user_id" not in json:
             abort(400, description="Missing user_id")
-        user = storage.get(User, id)
+        user = storage.get(User, json["user_id"])
         if user is None:
             abort(404)
         if "name" not in json:
