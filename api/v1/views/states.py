@@ -2,16 +2,10 @@
 """
 module that handles alll CRUD actions for state objects
 """
-from flask import abort, request
+from flask import abort, request, jsonify
 from api.v1.views import app_views
-from flask import jsonify
 from models import storage
 from models.state import State
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.user import User
-from models.review import Review
 
 
 @app_views.route("/states", strict_slashes=False)
@@ -27,7 +21,8 @@ def all_states():
     return jsonify(states_list)
 
 
-@app_views.route("/states/<id>", strict_slashes=False, methods=["GET", "DELETE"])
+@app_views.route("/states/<id>", strict_slashes=False,
+                 methods=["GET", "DELETE"])
 def state_by_id(id=None):
     '''
     returns json of State objects
@@ -52,13 +47,13 @@ def post_state():
     if (content_type == 'application/json'):
         json = request.json
         if "name" not in json:
-            return 'Missing name', 400
+            abort(400, description="Missing name")
         new_state = State(name=json["name"])
         storage.new(new_state)
         storage.save()
         return jsonify(new_state.to_dict()), 201
     else:
-        return 'Not a JSON', 400
+        abort(400, description="Not a Json")
 
 
 @app_views.route("/states/<id>", strict_slashes=False, methods=["PUT"])
@@ -74,10 +69,10 @@ def update_state(id):
     if (content_type == 'application/json'):
         json = request.json
         if "name" not in json:
-            return 'Missing name', 400
+            abort(400, description="Missing name")
         for key, value in json.items():
             setattr(state, key, value)
         storage.save()
         return jsonify(state.to_dict()), 201
     else:
-        return 'Not a JSON', 400
+        abort(400, description="Not a Json")
