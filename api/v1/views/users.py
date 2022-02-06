@@ -73,7 +73,8 @@ def update_user(id):
         if "name" not in json:
             abort(400, description="Missing name")
         for key, value in json.items():
-            setattr(user, key, value)
+            if key not in ["id", "email", "created_at", "updated_at"]:
+                setattr(user, key, value)
         storage.save()
         return jsonify(user.to_dict()), 200
     else:
