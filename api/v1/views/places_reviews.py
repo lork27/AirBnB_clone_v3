@@ -84,8 +84,6 @@ def update_review(id):
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         json = request.json
-        if "name" not in json:
-            abort(400, description="Missing name")
         for key, value in json.items():
             if key not in ["id", "user_id", "place_id", "created_at",
                            "updated_at"]:
