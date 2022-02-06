@@ -2,7 +2,6 @@
 """
 module that handles alll CRUD actions for state objects
 """
-from crypt import methods
 from flask import abort, request
 from api.v1.views import app_views
 from flask import jsonify
@@ -53,7 +52,7 @@ def post_state():
     if (content_type == 'application/json'):
         json = request.json
         if "name" not in json:
-            return 'missing name', 400
+            return 'Missing name', 400
         new_state = State(name=json["name"])
         storage.new(new_state)
         storage.save()
@@ -75,7 +74,7 @@ def update_state(id):
     if (content_type == 'application/json'):
         json = request.json
         if "name" not in json:
-            return 'missing name', 400
+            return 'Missing name', 400
         for key, value in json.items():
             setattr(state, key, value)
         storage.save()
