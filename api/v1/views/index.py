@@ -2,8 +2,6 @@
 """
 module that has routes to root and other endpoints
 """
-from calendar import c
-from re import I
 from api.v1.views import app_views
 from flask import jsonify
 from models import storage
