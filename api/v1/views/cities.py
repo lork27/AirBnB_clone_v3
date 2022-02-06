@@ -6,17 +6,20 @@ from flask import abort, request, jsonify
 from api.v1.views import app_views
 from models import storage
 from models.city import City
+from models.state import State
 
 
-@app_views.route("/cities", strict_slashes=False)
-def all_cities():
+@app_views.route("/states/<id>/cities", strict_slashes=False)
+def all_cities(id):
     '''
     returns json of City objects
     '''
-    cities = storage.all(City).values()
+    state = storage.get(State, id)
+    if state is None:
+        abort(404)
     cities_list = []
-    for obj in cities:
-        cities_list.append(obj.to_dict())
+    for city in state.cities:
+        cities_list.append(city.to_dict())
 
     return jsonify(cities_list)
 
@@ -38,17 +41,20 @@ def city_by_id(id=None):
         return jsonify({}), 200
 
 
-@app_views.route("/cities", strict_slashes=False, methods=["POST"])
-def post_city():
+@app_views.route("/states/<id>/cities", strict_slashes=False, methods=["POST"])
+def post_city(id):
     '''
     returns json of City objects
     '''
+    state = storage.get(State, id)
+    if state is None:
+        abort(404)
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         json = request.json
         if "name" not in json:
             abort(400, description="Missing name")
-        new_city = City(name=json["name"])
+        new_city = City(name=json["name"], state_id=json["state_id"])
         storage.new(new_city)
         storage.save()
         return jsonify(new_city.to_dict()), 201
