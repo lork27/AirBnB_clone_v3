@@ -61,11 +61,9 @@ def post_review(id):
         user = storage.get(User, json["user_id"])
         if user is None:
             abort(404)
-        if "name" not in json:
-            abort(400, description="Missing name")
         if "text" not in json:
             abort(400, description="Missing text")
-        new_review = Review(name=json["name"], user_id=user.id)
+        new_review = Review(user_id=user.id)
         new_review.place_id = place.id
         new_review.text = json["text"]
         storage.new(new_review)
