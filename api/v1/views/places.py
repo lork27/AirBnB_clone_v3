@@ -62,6 +62,7 @@ def post_place(id):
         if "name" not in json:
             abort(400, description="Missing name")
         new_place = Place(name=json["name"], user_id=user.id)
+        new_place.city_id = city.id
         storage.new(new_place)
         storage.save()
         return jsonify(new_place.to_dict()), 201
