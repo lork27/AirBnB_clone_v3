@@ -74,7 +74,6 @@ def update_place(id):
     '''
     returns json of City objects
     '''
-
     place = storage.get(Place, id)
     if place is None:
         abort(404)
@@ -84,7 +83,9 @@ def update_place(id):
         if "name" not in json:
             abort(400, description="Missing name")
         for key, value in json.items():
-            setattr(place, key, value)
+            if key not in ["id", "user_id", "city_id", "created_at",
+                           "updated_at"]:
+                setattr(place, key, value)
         storage.save()
         return jsonify(place.to_dict()), 200
     else:
