@@ -48,7 +48,12 @@ def post_user():
         json = request.json
         if "name" not in json:
             abort(400, description="Missing name")
-        new_user = User(name=json["name"])
+        if "email" not in json:
+            abort(400, description="Missing email")
+        if "password" not in json:
+            abort(400, description="Missing password")
+        new_user = User(
+            name=json["name"], email=json["email"], password=json["password"])
         storage.new(new_user)
         storage.save()
         return jsonify(new_user.to_dict()), 201
