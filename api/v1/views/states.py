@@ -53,7 +53,7 @@ def post_state():
         storage.save()
         return jsonify(new_state.to_dict()), 201
     else:
-        abort(400, description="Not a Json")
+        abort(400, description="Not a JSON")
 
 
 @app_views.route("/states/<id>", strict_slashes=False, methods=["PUT"])
@@ -75,4 +75,4 @@ def update_state(id):
         storage.save()
         return jsonify(state.to_dict()), 201
     else:
-        abort(400, description="Not a Json")
+        abort(400, description="Not a JSON")
