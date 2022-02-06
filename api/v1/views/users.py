@@ -70,8 +70,6 @@ def update_user(id):
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         json = request.json
-        if "name" not in json:
-            abort(400, description="Missing name")
         for key, value in json.items():
             if key not in ["id", "email", "created_at", "updated_at"]:
                 setattr(user, key, value)
