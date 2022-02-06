@@ -73,6 +73,6 @@ def update_state(id):
         for key, value in json.items():
             setattr(state, key, value)
         storage.save()
-        return jsonify(state.to_dict()), 201
+        return jsonify(state.to_dict()), 200
     else:
         abort(400, description="Not a JSON")
