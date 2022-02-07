@@ -1,14 +1,17 @@
 #!/usr/bin/python3
 """module that starts a flask dev server"""
+from importlib import resources
 from sqlalchemy import except_all
 from models import storage
 from flask import Flask, jsonify, safe_join
 from api.v1.views import app_views
 from os import getenv
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
+cors = CORS(app)
 
 
 @app.teardown_appcontext
